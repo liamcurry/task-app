@@ -1,0 +1,28 @@
+@custom-media --xs (width <= 300);
+@custom-media --sm (width > 300) and (width <= 600);
+@custom-media --md (width > 600) and (width <= 1000);
+@custom-media --lg (width > 1000) and (width <= 1200);
+@custom-media --xl (width > 1200);
+
+:root {
+  --font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    --primary-color-dark: #1976D2;
+    --primary-color: #2196F3;
+    --primary-color-light: #BBDEFB;
+    --primary-color-icons: #FFFFFF;
+    --accent-color: #03A9F4;
+    --primary-color-text: #212121;
+    --secondary-color-text: #727272;
+    --divider-color: #B6B6B6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--primary-color);
+  font-family: var(--font-family);
+}

@@ -1,0 +1,13 @@
+{
+    "use": [
+        "postcss-cssnext",
+        "postcss-url",
+        "cssnano"
+    ],
+    "cssnano": {
+        "autoprefixer": false
+    },
+    "postcss-url": {
+        "url": "inline"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "staticFileGlobs": [
+        "dist/**/!(service-worker).@(css|js|html|txt)"
+    ],
+    "staticPrefix": "dist",
+    "root": "dist"
+}
