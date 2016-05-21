@@ -6,14 +6,17 @@
 
 :root {
   --font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    --primary-color-dark: #1976D2;
-    --primary-color: #2196F3;
-    --primary-color-light: #BBDEFB;
-    --primary-color-icons: #FFFFFF;
-    --accent-color: #03A9F4;
-    --primary-color-text: #212121;
-    --secondary-color-text: #727272;
-    --divider-color: #B6B6B6;
+  --primary-color-dark: #1976D2;
+  --primary-color: #2196F3;
+  --primary-color-light: #BBDEFB;
+  --primary-color-icons: #FFFFFF;
+  --accent-color: #03A9F4;
+  --primary-color-text: #212121;
+  --secondary-color-text: #727272;
+  --divider-color: #B6B6B6;
+  --spacing: 15px;
+  --transition-speed: 1000ms;
+  --base-height: 60px;
 }
 
 * {
@@ -22,7 +25,88 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
-  color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-family);
+  transition: var(--transition-speed) background-color;
+}
+
+body > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  flex: 1;
+}
+
+.appHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: var(--base-height);
+}
+
+.addButton {
+  background-color: rgba(0, 0, 0, .5);
+  color: #fff;
+  display: block;
+  height: 100%;
+  line-height: var(--base-height);
+  padding: 0 20px;
+}
+
+.habit {
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, .5);
+  display: flex;
+  height: var(--base-height);
+  padding: 0 var(--spacing);
+  transition: var(--transition-speed) background-color;
+}
+.habit:first-of-type {
+  border-top: 1px solid rgba(255, 255, 255, .5);
+}
+
+.appTitle:before,
+.habitDesc:before {
+  content: '✗';
+  padding-right: var(--spacing);
+}
+
+.app-hitTarget .appTitle:before,
+.habit-hitTarget .habitDesc:before {
+  content: '✓';
+}
+
+.habitDesc {
+  flex: 1;
+}
+
+.habitRates {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.habitRateSep,
+.habitRateTarget {
+  font-size: 80%;
+}
+
+.habitInterval {
+  font-size: 60%;
+  opacity: 0.7;
+  text-transform: uppercase;
 }

@@ -4,10 +4,20 @@ head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
     title Home
-    meta(name='viewport' content='width=device-width' initial-scale='1')
-    link(rel='stylesheet' href='index.css')
-    script(src='service-worker-registration.js')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css')
 
+    if useSwCache
+        script(src='service-worker-registration.js')
+
+    if useGoogleWebmaster
+        meta(name='google-site-verification' content=googleWebmaster)
 
 body
     script(src='index.js')
+
+    if useGoogleAnalytics
+        script.
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','#{googleAnalytics}','auto');ga('send','pageview')
+        script(src='https://www.google-analytics.com/analytics.js' async defer)
