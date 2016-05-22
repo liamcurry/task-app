@@ -136,6 +136,9 @@ type Class
     | HabitInterval
     | HabitForm
     | Settings
+    | Input
+    | InputLabel
+    | InputField
 
 
 bgTransition config =
@@ -161,7 +164,7 @@ stylesWith config =
         , flexDirection column
         , fontFamilies config.fontFamilies
         , bgTransition config
-        , height (pct 100)
+        , minHeight (pct 100)
         , children
             [ div
                 [ displayFlex
@@ -218,6 +221,10 @@ stylesWith config =
         [ fontSize (pct 60)
         , opacity (float 0.7)
         , textTransform uppercase
+        ]
+    , (.) Input
+        [ display block
+        , height (px <| toFloat config.baseHeight)
         ]
     ]
 

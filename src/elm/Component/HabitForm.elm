@@ -23,7 +23,7 @@ import Html.Events as E
 
 import Model.Habit as Habit
 import Model.Inputs as Inputs
-import Style exposing (Class(..), class, classList, defaultConfig)
+import Style as S
 
 
 -- MODEL
@@ -80,29 +80,33 @@ update msg model =
         habit =
             model.habit
 
-        setHabit habit =
-            { model | habit = habit } ! []
+        setInput field value newHabit =
+            { model
+                | habit = newHabit
+                , inputs = Inputs.insert field value model.inputs
+            }
+                ! []
     in
         case msg of
-            SetName name ->
-                setHabit { habit | desc = name }
+            SetName str ->
+                setInput "name" str { habit | desc = str }
 
-            SetUnit unit ->
-                setHabit { habit | unit = unit }
+            SetUnit str ->
+                setInput "unit" str { habit | unit = str }
 
-            SetTarget targetStr ->
+            SetTarget str ->
                 let
                     target =
-                        Inputs.float model.habit.target targetStr
+                        Inputs.float model.habit.target str
                 in
-                    setHabit { habit | target = target }
+                    setInput "target" str { habit | target = target }
 
-            SetInterval intervalStr ->
+            SetInterval str ->
                 let
                     interval =
-                        Inputs.float model.habit.interval intervalStr
+                        Inputs.float model.habit.interval str
                 in
-                    setHabit { habit | interval = interval }
+                    setInput "interval" str { habit | interval = interval }
 
             Save ->
                 { model | habit = Habit.empty } ! []
@@ -114,7 +118,7 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div [ Style.class HabitForm ]
+    H.div [ S.class S.HabitForm ]
         [ H.form []
             [ fieldsView model ]
         ]
@@ -124,10 +128,11 @@ fieldsView : Model -> H.Html Msg
 fieldsView model =
     let
         input type' toStr label getVal fieldName msg =
-            H.label []
-                [ H.strong [] [ H.text label ]
+            H.label [ S.class S.Input ]
+                [ H.strong [ S.class S.InputLabel ] [ H.text label ]
                 , H.input
-                    [ A.placeholder label
+                    [ S.class S.InputField
+                    , A.placeholder label
                     , A.type' type'
                     , A.value
                         <| Maybe.withDefault (toStr <| getVal model.habit)
@@ -138,7 +143,7 @@ fieldsView model =
                 ]
 
         colorInput =
-            input "color" Style.colorToHex
+            input "color" S.colorToHex
 
         numInput =
             input "number" toString

@@ -12,7 +12,6 @@ import String
 -- INTERNAL
 
 import Style
-import Util
 
 
 type alias Inputs =
@@ -37,6 +36,11 @@ encode inputs =
 get : String -> Inputs -> Maybe String
 get =
     Dict.get
+
+
+insert : String -> String -> Inputs -> Dict.Dict String String
+insert =
+    Dict.insert
 
 
 

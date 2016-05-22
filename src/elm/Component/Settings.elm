@@ -13,7 +13,7 @@ import Json.Encode as E
 -- INTERNAL
 
 import Model.Inputs as Inputs
-import Style
+import Style as S
 
 
 -- MODEL
@@ -21,14 +21,14 @@ import Style
 
 type alias Model =
     { inputs : Inputs.Inputs
-    , style : Style.Config
+    , style : S.Config
     }
 
 
 empty : Model
 empty =
     { inputs = Inputs.empty
-    , style = Style.defaultConfig
+    , style = S.defaultConfig
     }
 
 
@@ -36,14 +36,14 @@ decoder : D.Decoder Model
 decoder =
     D.object2 Model
         ("inputs" := Inputs.decoder)
-        ("style" := Style.decoder)
+        ("style" := S.decoder)
 
 
 encode : Model -> E.Value
 encode model =
     E.object
         [ ( "inputs", Inputs.encode model.inputs )
-        , ( "style", Style.encode model.style )
+        , ( "style", S.encode model.style )
         ]
 
 
@@ -135,7 +135,7 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div [ Style.class Style.Settings ]
+    H.div [ S.class S.Settings ]
         [ fieldsView model ]
 
 
@@ -143,10 +143,11 @@ fieldsView : Model -> H.Html Msg
 fieldsView model =
     let
         input type' toStr label getVal fieldName msg =
-            H.label []
-                [ H.strong [] [ H.text label ]
+            H.label [ S.class S.Input ]
+                [ H.strong [ S.class S.InputLabel ] [ H.text label ]
                 , H.input
-                    [ A.placeholder label
+                    [ S.class S.InputField
+                    , A.placeholder label
                     , A.type' type'
                     , A.value
                         <| Maybe.withDefault (toStr <| getVal model.style)
@@ -157,7 +158,7 @@ fieldsView model =
                 ]
 
         colorInput =
-            input "color" Style.colorToHex
+            input "color" S.colorToHex
 
         intInput =
             input "number" toString
