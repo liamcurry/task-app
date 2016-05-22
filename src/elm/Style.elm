@@ -5,17 +5,21 @@ module Style
         , stylesWith
         , Config
         , defaultConfig
-        , configDecoder
-        , encodeConfig
+        , decoder
+        , encode
         , inline
         , class
         , classList
         , colorToHex
         , hexToColor
+        , toColor
+        , rateColor
+        , colorStyle
         )
 
 import Color
 import Color.Convert as Convert
+import Color.Mixing as Mixing
 import Css exposing (..)
 import Css.Elements exposing (..)
 import Css.Helpers exposing (toCssIdentifier, identifierToString)
@@ -55,8 +59,8 @@ defaultConfig =
     }
 
 
-configDecoder : D.Decoder Config
-configDecoder =
+decoder : D.Decoder Config
+decoder =
     D.object8 Config
         ("fontFamilies" := D.list D.string)
         ("colorGood" := colorDecoder)
@@ -68,8 +72,8 @@ configDecoder =
         ("baseHeight" := D.int)
 
 
-encodeConfig : Config -> E.Value
-encodeConfig config =
+encode : Config -> E.Value
+encode config =
     E.object
         [ ( "fontFamilies", E.list <| List.map E.string config.fontFamilies )
         , ( "colorGood", encodeColor config.colorGood )
@@ -130,7 +134,7 @@ type Class
     | HabitRateSep
     | HabitRateTarget
     | HabitInterval
-    | NewHabit
+    | HabitForm
     | Settings
 
 
@@ -246,3 +250,36 @@ classList list =
         |> List.map (identifierToString "")
         |> String.join " "
         |> Attr.class
+
+
+
+-- HELPERS
+
+
+toColor : Css.Color -> Color.Color
+toColor color =
+    Color.rgba color.red color.green color.blue color.alpha
+
+
+rateColor : Css.Color -> Css.Color -> Float -> Float -> Color.Color
+rateColor goodColor badColor rate target =
+    let
+        diff =
+            abs (target - rate)
+
+        percent =
+            if target == 0 && diff > 0 then
+                1.0
+            else
+                min 1 (diff / target)
+    in
+        Mixing.mix percent (badColor |> toColor) (goodColor |> toColor)
+
+
+colorStyle : Color.Color -> String
+colorStyle color =
+    color
+        |> Color.toRgb
+        |> (\rgba -> [ toString rgba.red, toString rgba.green, toString rgba.blue, toString rgba.alpha ])
+        |> String.join ","
+        |> (\rgba -> "rgba(" ++ rgba ++ ")")
